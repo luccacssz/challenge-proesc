@@ -78,4 +78,38 @@ App::down(function()
 |
 */
 
+
+// ... outras configurações do global.php ...
+
+Validator::extend('cpf_valido', function($attribute, $value, $parameters)
+{
+    
+    $cpf = preg_replace('/[^0-9]/', '', $value);
+
+
+    if (strlen($cpf) != 11) {
+        return false;
+    }
+
+   
+    if (preg_match('/(\d)\1{10}/', $cpf)) {
+        return false;
+    }
+
+    for ($t = 9; $t < 11; $t++) {
+        $d = 0;
+        for ($c = 0; $c < $t; $c++) {
+            $d += $cpf[$c] * (($t + 1) - $c);
+        }
+        $d = ((10 * $d) % 11) % 10;
+
+        if ($cpf[$t] != $d) {
+            return false;
+        }
+    }
+
+    return true;
+});
+
+
 require app_path().'/filters.php';
