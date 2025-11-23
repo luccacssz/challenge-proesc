@@ -1,129 +1,183 @@
-# Processo seletivo - Proesc
+ # Soluções do Desafio Técnico
 
-Olá, bem vindo(a) ao processo seletivo do Proesc.com! 
+Este documento contém as soluções para os desafios propostos, incluindo SQL, PHP (Controller, Service e Command), e ajustes de layout para boletins.
 
-Este desafio técnico é uma atividade prática, onde avaliaremos seus conhecimentos de lógica de programação, banco de dados e html, assuntos que precisará utilizar diariamente para a função analista de suporte n3 no Proesc.
+- - -
 
-- Linguagens: PHP **5.6**
-- Framework: Laravel
-- Banco de dados: Postgres
+## Sumário
 
-# Relatório de Chamado: Amiguinhos do Saber
+*   [1\. Banco de Dados - Relatório Financeiro](#desafio1)
+*   [2\. Ajuste de Boletim - Cálculo de Nota Final com Peso nos Bimestres](#desafio2)
+*   [3\. Novo Requisito - Tipo de Arredondamento](#desafio3)
+*   [4\. Ajuste de Boletim - Layout e Notas Vermelhas](#desafio4)
+*   [5\. Problema “Erro ao Adicionar Pessoa”](#desafio5)
 
-A instituição Amiguinhos do Saber abriu um chamado reportando alguns problemas. Veja a seguir.
+- - -
 
-## Ticket de Suporte: Solicitações de Ajustes e Tarefas Técnicas
+## 1\. Banco de Dados - Relatório Financeiro
 
-Prezada equipe de suporte,
+**Descrição:** Relatório com nomes e telefones das pessoas que não pagaram a mensalidade, quantidade de parcelas não pagas e valor total não pago por pessoa.
 
-Estou entrando em contato para solicitar uma série de ajustes e tarefas técnicas relacionadas ao nosso sistema. Abaixo, detalho cada uma das solicitações esperando que possam ser atendidas com a máxima eficiência e qualidade.
+**Requisitos:** SQL
 
-### 1. Banco de Dados - Relatório Financeiro
+**Arquivos Alterados:** Nenhum (consulta SQL diretamente no banco)
 
-**Descrição:** Precisamos de um relatório que traga todos os nomes e números de telefone das pessoas que não pagaram a mensalidade. Além disso, é necessário incluir a quantidade de parcelas não pagas e o valor somado total não pago por pessoa. Essa informação é vital para nossa equipe financeira iniciar o processo de cobrança efetiva.
+**Solução:**
 
- **Requisitos**
-- Utilize SQL.
-
-**Entregável**
-- Consulta SQL que retorne como resultado o que foi pedido acima.
-
-### 2. Ajuste de Boletim - Cálculo de Nota Final com Peso nos Bimestres
-
-**Descrição:** Solicito a revisão do cálculo das notas anuais dos alunos. As notas devem ser calculadas da seguinte forma: soma das notas do 1º e 2º bimestres mais o dobro das notas do 3º e 4º bimestres, dividido por 6. A fórmula seria: (1bim + 2bim + (3bim * 2) + (4bim * 2)) / 6. Esse ajuste reflete melhor o peso acadêmico de cada bimestre em nosso currículo.
-
- **Requisitos**
-- Código PHP.
-
-**Entregável**
-- Lógica em código PHP como resultado da solicitação acima.
-
-### 3. Novo Requisito - Tipo de Arredondamento
-
-**Descrição:** Implementar um sistema de arredondamento para as notas finais, onde frações iguais ou superiores a 0,7 serão arredondadas para o número inteiro mais próximo. Por exemplo, uma nota final de 55,7 deve ser arredondada para 56.
-
- **Requisitos**
-- Código PHP.
-
-**Entregável**
-- Lógica em código PHP como resultado da solicitação acima.
-
-### 4. Ajuste de Boletim - Layout e Notas Vermelhas
-
-**Descrição:** É necessário ajustar o layout do boletim para incluir informações adicionais do aluno e uma funcionalidade que destaque notas vermelhas. Precisamos que seja exibido no boletim a nota máxima e mínima em cada período e no cálculo final, sendo respectivamente: 70 e 100. Com isso, queremos automatizar a definição de notas vermelhas para facilitar a visualização de desempenhos abaixo do esperado.
-
- **Requisitos**
-- Necessário cumprir as tarefas 2 e 3 para cumprir esta demanda.
-- Código PHP, HTML, CSS (opcional javascript).
-
-**Entregável**
-- Lógica em código PHP, HTML, CSS (opcional javascript) como resultado da solicitação acima.
-
-### 5. Problema “Erro ao Adicionar Pessoa”
-
-**Situação I:** Ao tentar adicionar uma nova pessoa através do formulário em nosso sistema, um erro é retornado devido a um CPF inválido. Não sei por que isso está acontecendo, mas espero que você possa resolver.
-
-**Situação II:** Devido ao atraso causado por esse problema, precisamos de uma solução imediata para adicionar pessoas diretamente no banco de dados. Uma lista de pessoas será compartilhada através do drive para inclusão manual. [Link do drive](https://docs.google.com/spreadsheets/d/1MB8xHwLek8PLgcOfBiyxWhk6ZplomVrSXtdtvEZjiXY/edit?usp=sharing).
-
- **Requisitos**
-- Código PHP, SCRIPT ou SQL.
-
-**Entregável**
-- Lógica em código PHP, SCRIPT ou SQL como resultado da solicitação acima.
-
-Cada uma dessas solicitações é crucial para a operação contínua e a eficiência de nossos processos internos. Agradeço antecipadamente a atenção e a rapidez na resolução desses itens. Por favor, mantenham-me informado sobre o progresso de cada tarefa.
-
-### Como executar 
-
-Para iniciá-lo, siga os passos abaixo:
-
-1 -  Clone o projeto para o seu computador:
-```bash
-$ git clone https://github.com/v-gama/processo_seletivo.git
+```
+SELECT 
+    pessoas.nome, 
+    pessoas.telefone, 
+    COUNT(parcelas.debito_id) AS total_parcelas, 
+    SUM(parcelas.valor) AS valor_nao_pago
+FROM pessoas
+INNER JOIN debitos ON debitos.pessoa_id = pessoas.id
+INNER JOIN parcelas ON parcelas.debito_id = debitos.id
+WHERE parcelas.pago = false
+GROUP BY pessoas.nome, pessoas.telefone
+ORDER BY pessoas.nome;
 ```
 
-2 - Entre na pasta do projeto
-```bash
-$ cd processo_seletivo
-```
-3 - Instale as depêndencias
+- - -
 
-```bash
-$ sudo add-apt-repository ppa:ondrej/php
-```
+## 2\. Ajuste de Boletim - Cálculo de Nota Final com Peso nos Bimestres
 
-```bash
-$ sudo apt install php5.6 -y
-```
+**Descrição:** Cálculo de nota anual com pesos diferentes:
 
-```bash
-$ curl -sS https://getcomposer.org/installer | php
-```
+*   1º e 2º bimestre: peso 1
+*   3º e 4º bimestre: peso 2
 
-```bash
-$ composer install
-```
+Fórmula: (1bim + 2bim + (3bim\*2) + (4bim\*2)) / 6
 
-4 - Crie o arquivo arquivo .env.local.php copiando o arquivo [.env.local.example.php](.env.local.example.php) e configure com as informações do seu banco local
+**Requisitos:** PHP
 
-5 - Rode as migrations
-```bash
-$ php artisan migrate
+**Arquivos Alterados:** NotasFormatar.php (Service), BoletimController.php (Controller)
+
+**Funções Criadas/Alteradas:**
+
+*   formataNotasPeriodos($notas, $criterio\_avaliativo)
+*   calculaNotaFinal($notas, $disciplinas, $criterio\_avaliativo)
+*   calculo3($array\_notas, $arredondamento\_id)
+*   arredondaNota($nota, $arredondamento\_id)
+*   calculaNotasPorDisciplinaPeriodo($notas\_periodos)
+*   calculaNotaMaxima($notas\_por\_disciplina\_periodo, $notas\_finais, $disciplinas, $diarios)
+
+**Trecho representativo do Service:**
+
 ```
-6 - Rode o seeder
-```bash
-$ php artisan db:seed
-```
-7 - Inicie o projeto:
-```bash
-$ php artisan serve
+$media = ($disciplina['notas'][1] + $disciplina['notas'][2] +
+          ($disciplina['notas'][3]*2) + ($disciplina['notas'][4]*2)) / 6;
+$disciplina['valor_nota'] = $this->arredondaNota($media, $arredondamento_id);
 ```
 
+**Trecho representativo do Controller:**
 
-## Entrega
-Para entregar sua solução, baixe este projeto e resolva as solicitações propostas.
+```
+$notas_finais = $notas_formatar->calculaNotaFinal($notas_periodos, $disciplinas, $criterio_avaliativo);
+$notas_por_disciplina_periodo = $notas_formatar->calculaNotasPorDisciplinaPeriodo($notas_periodos);
+$resultadoNotaMaxima = $notas_formatar->calculaNotaMaxima(
+    $notas_por_disciplina_periodo, $notas_finais, $disciplinas, $diarios
+);
+```
 
-Assim que finalizar, suba a sua solução para o github e nos envie o link do seu repositório respondendo o e-mail recebido.
+- - -
 
-Em caso de dúvida, não hesite em nos contatar através do e-mail recebido ou para victorgama@proesc.com :]
-# challenge-proesc
+## 3\. Novo Requisito - Tipo de Arredondamento
+
+**Descrição:** Implementar arredondamento: frações >= 0,7 arredondam para o número inteiro mais próximo.
+
+**Requisitos:** PHP
+
+**Arquivos Alterados:** NotasFormatar.php (Service)
+
+**Funções Criadas/Alteradas:**
+
+*   arredondamento3($valor\_nota)
+*   arredondaNota($nota, $arredondamento\_id)
+
+**Trecho representativo:**
+
+```
+protected function arredondamento3($valor_nota)
+{
+    $parte_inteira = floor($valor_nota);
+    $parte_decimal = $valor_nota - $parte_inteira;
+
+    return $parte_decimal >= 0.7 ? $parte_inteira + 1 : $parte_inteira;
+}
+```
+
+- - -
+
+## 4\. Ajuste de Boletim - Layout e Notas Vermelhas
+
+**Descrição:** Ajuste do boletim para incluir informações adicionais e destacar notas vermelhas. Exibição de nota mínima e máxima por período e no cálculo final.
+
+**Requisitos:** PHP, HTML, CSS (opcional JS)
+
+**Arquivos Alterados:** NotasFormatar.php (Service), BoletimController.php (Controller), relatorios/boletim.blade.php (View)
+
+**Trechos representativos:**
+
+```
+foreach ($notas_finais as &$nf) {
+    $nf['vermelha'] = $nf['valor_nota'] < self::NOTA_MIN;
+    $nf['nota_min'] = self::NOTA_MIN;
+    $nf['nota_max'] = self::NOTA_MAX;
+}
+```
+
+```
+<tr class="{{ $nota->vermelha ? 'nota-vermelha' : '' }}">
+    <td>{{ $aluno->nome }}</td>
+    <td>{{ $nota->valor_nota }}</td>
+</tr>
+
+<style>
+.nota-vermelha { color: red; font-weight: bold; }
+</style>
+```
+
+- - -
+
+## 5\. Problema “Erro ao Adicionar Pessoa”
+
+**Descrição:**
+
+*   Situação I: erro ao adicionar pessoa via formulário
+*   Situação II: importação de pessoas diretamente no banco via CSV
+
+**Requisitos:** PHP, SQL ou Script
+
+**Arquivos Alterados/Criados:** PessoasController.php (Controller), ImportPessoas.php (Command Artisan), CSV: storage/people\_import.csv
+
+**Funções Criadas/Alteradas:**
+
+*   Controller: visualizarFormulario(), cadastrarPessoa()
+*   Command: fire() → importa CSV
+
+**Trecho representativo do Controller:**
+
+```
+Pessoa::create([
+    'nome'     => Input::get('nome'),
+    'email'    => Input::get('email'),
+    'cpf'      => Input::get('cpf'),
+    'telefone' => Input::get('telefone'),
+    'grupo_id' => Input::get('grupo_id')
+]);
+```
+
+**Trecho representativo do Command:**
+
+```
+Pessoa::firstOrCreate(
+    ['email' => $data['EMAIL']],
+    [
+        'nome'     => trim($data['NOME']),
+        'cpf'      => preg_replace('/\D/', '', $data['CPF']),
+        'telefone' => preg_replace('/\D/', '', $data['TELEFONE']),
+        'grupo_id' => trim($data['GRUPO']),
+    ]
+);
+```
