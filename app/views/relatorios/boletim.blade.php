@@ -86,9 +86,9 @@
 </tbody>
 
    </table>
-   <div class="observacao-boletim mt-4">
-    <div class="obs-icon">!</div>
-    <div class="obs-text">
+   <div class="observacao__boletim mt-4">
+    <div class="obs__icon">!</div>
+    <div class="obs__text">
         <strong>Atenção:</strong>  
         Notas com média abaixo de <strong>70</strong> são exibidas em 
         <span class="text__red" style="font-weight: bold;">vermelho</span>.
