@@ -2,17 +2,36 @@
 
 Este documento contém as soluções para os desafios propostos, incluindo SQL, PHP (Controller, Service e Command), e ajustes de layout para boletins.
 
-- - -
+## 🚀 Como Rodar o Projeto com Docker
 
-## Sumário
+Para iniciar a aplicação e o banco de dados utilizando Docker, siga os passos abaixo no diretório raiz do projeto onde está o arquivo `docker-compose.yml`:
 
-*   [1\. Banco de Dados - Relatório Financeiro](#desafio1)
-*   [2\. Ajuste de Boletim - Cálculo de Nota Final com Peso nos Bimestres](#desafio2)
-*   [3\. Novo Requisito - Tipo de Arredondamento](#desafio3)
-*   [4\. Ajuste de Boletim - Layout e Notas Vermelhas](#desafio4)
-*   [5\. Problema “Erro ao Adicionar Pessoa”](#desafio5)
+1.  **Construa e inicie os contêineres:**
+    ```bash
+    docker-compose up -d
+    ```
+    * O serviço **`php56`** estará acessível em `http://localhost:8000`.
+    * O serviço **`db`** (PostgreSQL) estará rodando na porta `5432`.
 
-- - -
+2.  **Acessar a Aplicação:**
+    Após a execução do comando, abra seu navegador e acesse:
+    [http://localhost:8000](http://localhost:8000)
+
+3.  **Executar Comandos (Ex: Artisan, Composer):**
+    Para rodar comandos dentro do contêiner da aplicação (PHP), use o seguinte formato:
+    ```bash
+    docker exec php56 <seu_comando>
+    # Exemplo: docker exec php56 php artisan migrate
+    ```
+
+4.  **Parar e Remover os Contêineres:**
+    Quando terminar, você pode parar e remover os contêineres, redes e volumes (exceto o volume de dados `pgdata`, a menos que você adicione a flag `-v`):
+    ```bash
+    docker-compose down
+    ```
+
+-------
+
 
 ## 1\. Banco de Dados - Relatório Financeiro
 
@@ -58,9 +77,11 @@ Fórmula: (1bim + 2bim + (3bim\*2) + (4bim\*2)) / 6
 *   formataNotasPeriodos($notas, $criterio\_avaliativo)
 *   calculaNotaFinal($notas, $disciplinas, $criterio\_avaliativo)
 *   calculo3($array\_notas, $arredondamento\_id)
-*   arredondaNota($nota, $arredondamento\_id)
-*   calculaNotasPorDisciplinaPeriodo($notas\_periodos)
-*   calculaNotaMaxima($notas\_por\_disciplina\_periodo, $notas\_finais, $disciplinas, $diarios)
+
+
+**Migration Criada para inserir novo calculo e atualizar os criterios avaliativos:**
+
+*  2025_11_23_141539_update_criterios_avaliativos_table
 
 **Trecho representativo do Service:**
 
@@ -74,10 +95,7 @@ $disciplina['valor_nota'] = $this->arredondaNota($media, $arredondamento_id);
 
 ```
 $notas_finais = $notas_formatar->calculaNotaFinal($notas_periodos, $disciplinas, $criterio_avaliativo);
-$notas_por_disciplina_periodo = $notas_formatar->calculaNotasPorDisciplinaPeriodo($notas_periodos);
-$resultadoNotaMaxima = $notas_formatar->calculaNotaMaxima(
-    $notas_por_disciplina_periodo, $notas_finais, $disciplinas, $diarios
-);
+
 ```
 
 - - -
@@ -117,6 +135,12 @@ protected function arredondamento3($valor_nota)
 
 **Arquivos Alterados:** NotasFormatar.php (Service), BoletimController.php (Controller), relatorios/boletim.blade.php (View)
 
+**Funções Criadas/Alteradas:**
+
+*   calculaNotasPorDisciplinaPeriodo($notas\_periodos)
+*   calculaNotaMaxima($notas\_por\_disciplina\_periodo, $notas\_finais, $disciplinas, $diarios)
+
+
 **Trechos representativos:**
 
 ```
@@ -125,17 +149,6 @@ foreach ($notas_finais as &$nf) {
     $nf['nota_min'] = self::NOTA_MIN;
     $nf['nota_max'] = self::NOTA_MAX;
 }
-```
-
-```
-<tr class="{{ $nota->vermelha ? 'nota-vermelha' : '' }}">
-    <td>{{ $aluno->nome }}</td>
-    <td>{{ $nota->valor_nota }}</td>
-</tr>
-
-<style>
-.nota-vermelha { color: red; font-weight: bold; }
-</style>
 ```
 
 - - -
@@ -180,4 +193,12 @@ Pessoa::firstOrCreate(
         'grupo_id' => trim($data['GRUPO']),
     ]
 );
+```
+
+**Para importar o arquivo disponibilizado no drive rodar o comando abaixo:**
+
+```
+  php artisan import:pessoas
+  ou pelo docker
+  docker exec php56 php artisan import:pessoas
 ```
