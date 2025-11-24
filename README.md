@@ -168,6 +168,9 @@ foreach ($notas_finais as &$nf) {
 }
 ```
 
+
+<img width="1507" height="688" alt="Screenshot from 2025-11-24 12-43-30" src="https://github.com/user-attachments/assets/efe66b75-fb6e-48f4-aa7b-dff7c0da4fdd" />
+
 - - -
 
 ## 5\. Problema “Erro ao Adicionar Pessoa”
@@ -219,3 +222,5 @@ Pessoa::firstOrCreate(
   ou pelo docker
   docker exec php56 php artisan import:pessoas
 ```
+
+<img width="1226" height="634" alt="Screenshot from 2025-11-24 12-43-15" src="https://github.com/user-attachments/assets/6ab5cca5-0f8b-45f0-8ae2-047c64932a41" />
