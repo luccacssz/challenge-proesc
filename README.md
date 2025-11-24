@@ -10,21 +10,19 @@ Para iniciar a aplicação e o banco de dados utilizando Docker, siga os passos 
     ```bash
        git clone git@github.com:luccacssz/challenge-proesc.git
        cd challenge-proesc
+       cp .env.example .env
             
     ```
-    
+2.  **O arquivo .env.local.php, precisa estar com as mesmas credenciais do banco de dados que estao no .env, essas informacoes serao usadas no docker-compose.yml**
  
-2.  **Construa e inicie os contêineres:**
+3.  **Construa e inicie os contêineres:**
     ```bash
     docker-compose up -d
     docker compose exec -it php56 bash     
     composer install    
     cd /var/www/html
-    chmod -R 777 app/storage    
-    
+    chmod -R 777 app/storage        
     ```
-3.  **O arquivo .env.local.php, precisa estar com as mesmas credenciais do banco de dados que estao no docker-compose.yml:**
-
 4.  **Rode as migrations:**
     ```bash
     php artisan migrate
