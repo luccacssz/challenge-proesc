@@ -25,7 +25,7 @@ class PessoasController extends BaseController {
         }
         
         Pessoa::create([
-            'nome'     => Input::get('nome'),
+            'nome'     => mb_strtoupper(Input::get('nome'), 'UTF-8'),
             'email'    => Input::get('email'),
             'cpf'      => Input::get('cpf'),
             'telefone' => Input::get('telefone'),

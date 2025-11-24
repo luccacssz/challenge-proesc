@@ -30,26 +30,43 @@ class ImportPessoas extends Command
 
                 $data = array_combine($header, $row);
 
+             
                 $nome     = trim($data['NOME']);
                 $email    = trim($data['EMAIL']);
                 $cpf      = preg_replace('/\D/', '', $data['CPF']);
                 $telefone = preg_replace('/\D/', '', $data['TELEFONE']);
                 $grupo_id = trim($data['GRUPO']); 
 
+             
                 if ($nome === '' || $email === '') {
                     $this->error("Linha ignorada por falta de nome/email");
                     continue;
                 }
-                
-                Pessoa::firstOrCreate(
-                    ['email' => $email],
-                    [
-                        'nome'      => $nome,
+
+               
+                $pessoa = Pessoa::where('email', $email)->first();
+
+                if ($pessoa) {
+
+                    
+                    $pessoa->update([
+                        'nome'      => mb_strtoupper($nome, 'UTF-8'),
                         'cpf'       => $cpf,
                         'telefone'  => $telefone,
                         'grupo_id'  => $grupo_id,
-                    ]
-                );
+                    ]);
+
+                } else {
+
+                    
+                    Pessoa::create([
+                        'email'     => $email,
+                        'nome'      => mb_strtoupper($nome, 'UTF-8'),
+                        'cpf'       => $cpf,
+                        'telefone'  => $telefone,
+                        'grupo_id'  => $grupo_id,
+                    ]);
+                }
             }
 
             fclose($handle);
