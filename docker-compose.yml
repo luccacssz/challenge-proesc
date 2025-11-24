@@ -12,11 +12,7 @@ services:
 
   db:
     image: postgres:12
-    container_name: postgres_db
-    # environment:
-    #   POSTGRES_DB: processo_seletivo
-    #   POSTGRES_USER: user
-    #   POSTGRES_PASSWORD: secret
+    container_name: postgres_db  
     env_file:
       - .env
     ports:
