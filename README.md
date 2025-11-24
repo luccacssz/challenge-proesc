@@ -1,6 +1,6 @@
  # Soluções do Desafio Técnico
 
-Este documento contém as soluções para os desafios propostos, incluindo SQL, PHP (Controller, Service e Command), e ajustes de layout para boletins.
+Este repositório contém as soluções para os desafios propostos, incluindo SQL, PHP (Controller, Service e Command), e ajustes de layout para boletins.
 
 ## 🚀 Como Rodar o Projeto com Docker
 
