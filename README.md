@@ -169,7 +169,8 @@ foreach ($notas_finais as &$nf) {
 ```
 
 
-<img width="1507" height="688" alt="Screenshot from 2025-11-24 12-43-30" src="https://github.com/user-attachments/assets/efe66b75-fb6e-48f4-aa7b-dff7c0da4fdd" />
+<img width="1332" height="645" alt="Screenshot from 2025-11-24 16-16-56" src="https://github.com/user-attachments/assets/ab4e6b50-8b0c-42a7-8c5f-06b3d5e839ac" />
+
 
 - - -
 
