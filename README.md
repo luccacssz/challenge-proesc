@@ -224,3 +224,6 @@ Pessoa::firstOrCreate(
 ```
 
 <img width="1226" height="634" alt="Screenshot from 2025-11-24 12-43-15" src="https://github.com/user-attachments/assets/6ab5cca5-0f8b-45f0-8ae2-047c64932a41" />
+
+<img width="1107" height="500" alt="Screenshot from 2025-11-24 12-48-04" src="https://github.com/user-attachments/assets/e92da6e7-8f96-4e9a-94ba-02bab8df5a05" />
+
