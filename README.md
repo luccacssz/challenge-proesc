@@ -10,29 +10,40 @@ Para iniciar a aplicação e o banco de dados utilizando Docker, siga os passos 
     ```bash
        git clone git@github.com:luccacssz/challenge-proesc.git
        cd challenge-proesc
-       cp .env.example .env       
+            
     ```
-    * No .env inserir as credenciais do banco de dados para ser utilizado no docker
+    
  
 2.  **Construa e inicie os contêineres:**
     ```bash
     docker-compose up -d
+    docker compose exec -it php56 bash     
+    composer install    
+    cd /var/www/html
+    chmod -R 777 app/storage    
+    
     ```
-    * O serviço **`php56`** estará acessível em `http://localhost:8000`.
-    * O serviço **`db`** (PostgreSQL) estará rodando na porta `5432`.
+3.  **O arquivo .env.local.php, precisa estar com as mesmas credenciais do banco de dados que estao no docker-compose.yml:**
 
-3.  **Acessar a Aplicação:**
+4.  **Rode as migrations:**
+    ```bash
+    php artisan migrate
+
+5.  **Rode as seeds:**
+    ```bash
+    php artisan db:seed  
+  
+6.  **Acessar a Aplicação:**
     Após a execução do comando, abra seu navegador e acesse:
     [http://localhost:8000](http://localhost:8000)
 
-4.  **Executar Comandos (Ex: Artisan, Composer):**
-    Para rodar comandos dentro do contêiner da aplicação (PHP), use o seguinte formato:
-    ```bash
-    docker exec php56 <seu_comando>
-    # Exemplo: docker exec php56 php artisan migrate
-    ```
 
-5.  **Parar e Remover os Contêineres:**
+7.  **Executar Comandos (Ex: Artisan, Composer):**
+    Para rodar comandos dentro do contêiner da aplicação (PHP), entre no container
+    ```bash 
+    docker compose exec -it php56 bash 
+
+8.  **Parar e Remover os Contêineres:**
     Quando terminar, você pode parar e remover os contêineres, redes e volumes (exceto o volume de dados `pgdata`, a menos que você adicione a flag `-v`):
     ```bash
     docker-compose down
