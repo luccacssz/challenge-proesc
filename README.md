@@ -192,25 +192,25 @@ foreach ($notas_finais as &$nf) {
 **Trecho representativo do Controller:**
 
 ```
-Pessoa::create([
+  Pessoa::create([
     'nome'     => mb_strtoupper(Input::get('nome'), 'UTF-8'),
     'email'    => Input::get('email'),
     'cpf'      => Input::get('cpf'),
     'telefone' => Input::get('telefone'),
     'grupo_id' => Input::get('grupo_id')
-]);
+  ]);
 ```
 
 **Trecho representativo do Command:**
 
 ```
-       Pessoa::create([
-        'email'     => $email,
-        'nome'      => mb_strtoupper($nome, 'UTF-8'),
-        'cpf'       => $cpf,
-        'telefone'  => $telefone,
-        'grupo_id'  => $grupo_id,
-        ]);
+  Pessoa::create([
+   'email'     => $email,
+   'nome'      => mb_strtoupper($nome, 'UTF-8'),
+   'cpf'       => $cpf,
+   'telefone'  => $telefone,
+   'grupo_id'  => $grupo_id,
+  ]);
         
 ```
 
