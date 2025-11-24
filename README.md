@@ -193,7 +193,7 @@ foreach ($notas_finais as &$nf) {
 
 ```
 Pessoa::create([
-    'nome'     => Input::get('nome'),
+    'nome'     => mb_strtoupper(Input::get('nome'), 'UTF-8'),
     'email'    => Input::get('email'),
     'cpf'      => Input::get('cpf'),
     'telefone' => Input::get('telefone'),
@@ -204,15 +204,14 @@ Pessoa::create([
 **Trecho representativo do Command:**
 
 ```
-Pessoa::firstOrCreate(
-    ['email' => $data['EMAIL']],
-    [
-        'nome'     => trim($data['NOME']),
-        'cpf'      => preg_replace('/\D/', '', $data['CPF']),
-        'telefone' => preg_replace('/\D/', '', $data['TELEFONE']),
-        'grupo_id' => trim($data['GRUPO']),
-    ]
-);
+       Pessoa::create([
+        'email'     => $email,
+        'nome'      => mb_strtoupper($nome, 'UTF-8'),
+        'cpf'       => $cpf,
+        'telefone'  => $telefone,
+        'grupo_id'  => $grupo_id,
+        ]);
+        
 ```
 
 **Para importar o arquivo disponibilizado no drive rodar o comando abaixo:**
