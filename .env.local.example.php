@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'db_host' => '127.0.0.1',
+    'db_host' => 'db',
     'db_port' => 5432,
     'db_name' => 'nome_banco_local', # nome do seu banco de dados local
     'db_connection' => 'pgsql',
