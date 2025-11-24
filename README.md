@@ -8,7 +8,7 @@ Para iniciar a aplicação e o banco de dados utilizando Docker, siga os passos 
 
 1.  **Clonar o projeto**
     ```bash
-       git clone git@github.com:luccacssz/challenge-proesc.git
+       git clone https://github.com/luccacssz/challenge-proesc.git
        cd challenge-proesc
        cp .env.example .env
             
