@@ -6,25 +6,33 @@ Este repositório contém as soluções para os desafios propostos, incluindo SQ
 
 Para iniciar a aplicação e o banco de dados utilizando Docker, siga os passos abaixo no diretório raiz do projeto onde está o arquivo `docker-compose.yml`:
 
-1.  **Construa e inicie os contêineres:**
+1.  **Clonar o projeto**
+    ```bash
+       git clone git@github.com:luccacssz/challenge-proesc.git
+       cd challenge-proesc
+       cp .env.example .env       
+    ```
+    * No .env inserir as credenciais do banco de dados para ser utilizado no docker
+ 
+2.  **Construa e inicie os contêineres:**
     ```bash
     docker-compose up -d
     ```
     * O serviço **`php56`** estará acessível em `http://localhost:8000`.
     * O serviço **`db`** (PostgreSQL) estará rodando na porta `5432`.
 
-2.  **Acessar a Aplicação:**
+3.  **Acessar a Aplicação:**
     Após a execução do comando, abra seu navegador e acesse:
     [http://localhost:8000](http://localhost:8000)
 
-3.  **Executar Comandos (Ex: Artisan, Composer):**
+4.  **Executar Comandos (Ex: Artisan, Composer):**
     Para rodar comandos dentro do contêiner da aplicação (PHP), use o seguinte formato:
     ```bash
     docker exec php56 <seu_comando>
     # Exemplo: docker exec php56 php artisan migrate
     ```
 
-4.  **Parar e Remover os Contêineres:**
+5.  **Parar e Remover os Contêineres:**
     Quando terminar, você pode parar e remover os contêineres, redes e volumes (exceto o volume de dados `pgdata`, a menos que você adicione a flag `-v`):
     ```bash
     docker-compose down
